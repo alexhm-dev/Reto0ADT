@@ -21,7 +21,7 @@ public class Customer implements Serializable {
     private String city;
     private String state;
     private int zip;
-    private int phone;
+    private long phone;
     private String email;
     
     //constructor
@@ -94,7 +94,7 @@ public class Customer implements Serializable {
         this.zip = zip;
     }
 
-    public int getPhone() {
+    public long getPhone() {
         return phone;
     }
 

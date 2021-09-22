@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  */
 public class Account implements Serializable {
     //attributes
-    private int id;
+    private long id;
     private String description;
     private float balance;
     private float creditLine;
@@ -29,7 +29,7 @@ public class Account implements Serializable {
     
     //getters & setters
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

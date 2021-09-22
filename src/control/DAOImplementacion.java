@@ -29,14 +29,14 @@ public class DAOImplementacion implements DAO {
     private String userBD;
     private String contraBD;
     //Sentencias SQL
-    private final String createUser = "INSERT INTO customer(id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) values (?,?,?,?,?,?);";
-
+    private final String createAccount = "INSERT INTO account(id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) values (?,?,?,?,?,?);";
+    private final String createCustomer = "INSERT INTO customer(id, city, email, firstName, lastName, middleInitial, phone, state, street, zip) values (?,?,?,?,?,?,?)";
     public DAOImplementacion() {
-        this.configFile = ResourceBundle.getBundle("src\\control\\dbaccess.properties");
-        this.driverBD = configFile.getString("driver");
-        this.urlBD = configFile.getString("con");
-        this.userBD = configFile.getString("DBUSER");
-        this.contraBD = configFile.getString("DBPASS");
+        this.configFile = ResourceBundle.getBundle("control.configure");
+        this.driverBD = configFile.getString("Driver");
+        this.urlBD = configFile.getString("Conn");
+        this.userBD = configFile.getString("DBUser");
+        this.contraBD = configFile.getString("DBPass");
     }
 
     private void openConnection() {
@@ -65,7 +65,7 @@ public class DAOImplementacion implements DAO {
         this.openConnection();
         try
         {
-            stmt = con.prepareStatement(createUser);
+            stmt = con.prepareStatement(createCustomer);
             stmt.setInt(1, c.getId());
             stmt.setString(2, c.getFirstName());
             stmt.setString(3, c.getLastName());
@@ -74,9 +74,10 @@ public class DAOImplementacion implements DAO {
             stmt.setString(6, c.getCity());
             stmt.setString(7, c.getState());
             stmt.setInt(8, c.getZip());
-            stmt.setInt(9, c.getPhone());
+            stmt.setLong(9, c.getPhone());
             stmt.setString(10, c.getEmail());
-            stmt.executeUpdate();
+            int row = stmt.executeUpdate();
+            System.out.println("Filas afectadas -> " + row);
         } catch (Exception e)
         {
 

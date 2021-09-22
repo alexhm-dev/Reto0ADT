@@ -23,14 +23,25 @@ public class Application {
         // TODO code application logic here
         DAO bancoDAO = new DAOImplementacion();
         int op;
-        Customer c = null;
+        Customer cli = new Customer();
+        
         do
         {
+        cli.setId(4);
+        cli.setCity("Bilbao");
+        cli.setEmail("cliente@ejemplo.com");
+        cli.setFirstName("Peter");
+        cli.setLastName("Parker");
+        cli.setMiddleInitial("J");
+        cli.setPhone(945612378);
+        cli.setState("Bizkaia");
+        cli.setStreet("C/Rue de la pirulet");
+        cli.setZip(48015);
             op = menu();
             switch (op)
             {
                 case 1:
-                   crearCliente(bancoDAO,c);
+                   crearCliente(bancoDAO,cli);
                     break;
                 case 2:
                     //listadoPropuestas(fichPro);
@@ -61,17 +72,6 @@ public class Application {
 	}
 
     private static void crearCliente(DAO dao,Customer c) {
-        Customer cli = new Customer();
-        cli.setId(4);
-        cli.setCity("Bilbao");
-        cli.setEmail("cliente@ejemplo.com");
-        cli.setFirstName("Peter");
-        cli.setLastName("Parker");
-        cli.setMiddleInitial("J");
-        cli.setPhone(945612378);
-        cli.setState("Bizkaia");
-        cli.setStreet("C/Rue de la pirulet");
-        cli.setZip(48015);
-        dao.crearCliente(cli);
+        dao.crearCliente(c);
     }
 }
