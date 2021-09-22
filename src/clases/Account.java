@@ -1,0 +1,88 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package clases;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+/**
+ *
+ * @author 2dam
+ */
+public class Account implements Serializable {
+    //attributes
+    private int id;
+    private String description;
+    private float balance;
+    private float creditLine;
+    private float beginBalance;
+    private Timestamp beginBalanceTimestamp;
+    private AccountType type;
+    
+    //constructor
+
+    public Account() {
+    }
+    
+    //getters & setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
+    public float getCreditLine() {
+        return creditLine;
+    }
+
+    public void setCreditLine(float creditLine) {
+        this.creditLine = creditLine;
+    }
+
+    public float getBeginBalance() {
+        return beginBalance;
+    }
+
+    public void setBeginBalance(float beginBalance) {
+        this.beginBalance = beginBalance;
+    }
+
+    public Timestamp getBeginBalanceTimestamp() {
+        return beginBalanceTimestamp;
+    }
+
+    public void setBeginBalanceTimestamp(Timestamp beginBalanceTimestamp) {
+        this.beginBalanceTimestamp = beginBalanceTimestamp;
+    }
+
+    public AccountType getType() {
+        return type;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
+    }
+    
+}
