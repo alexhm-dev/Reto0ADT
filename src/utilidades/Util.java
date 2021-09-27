@@ -199,6 +199,23 @@ public class Util {
 		return num;
 	}
 	
+        public static long leerLong(String mensaje){
+		long num=0;
+		boolean error;
+		System.out.println(mensaje);
+		do{
+			error=false;
+			try{
+				num=Long.parseLong(introducirCadena());
+			}
+			catch(NumberFormatException e){
+				System.out.println("Error, el dato no es numérico. Introduce de nuevo: ");
+				error=true;
+			}
+		}while(error);
+		return num;
+	}
+        
 	public static int leerInt(int x, int y){
 		int num;
 		boolean error;

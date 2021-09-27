@@ -20,7 +20,7 @@ public interface DAO {
     public void crearCliente(Customer c);
     
     //consultar datos cliente
-    public Customer consultarCliente(int idCus);
+    public Customer consultarCliente(long idCus);
     
     //consultar cuentas cliente
     public List<Account> consultarCuentas(int idAcc);

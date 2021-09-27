@@ -3,14 +3,12 @@ package control;
 import clases.Account;
 import clases.Customer;
 import clases.Movement;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -22,15 +20,14 @@ public class DAOImplementacion implements DAO {
     private Connection con;
     private PreparedStatement stmt;
     private ResourceBundle configFile;
-    //private Properties props;
-    //private FileReader reader;
     private String driverBD;
     private String urlBD;
     private String userBD;
     private String contraBD;
-    //Sentencias SQL
-    private final String createAccount = "INSERT INTO account(id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) values (?,?,?,?,?,?);";
-    private final String createCustomer = "INSERT INTO customer(id, city, email, firstName, lastName, middleInitial, phone, state, street, zip) values (?,?,?,?,?,?,?)";
+    private final String CREATE_ACCOUNT = "INSERT INTO account(id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) VALUES (?,?,?,?,?,?)";
+    //private final String CREATE_CUSTOMER = "INSERT INTO customer(id, city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private final String CREATE_CUSTOMER = "INSERT INTO customer(city, email, firstName, lastName, middleInitial, phone, state, street, zip) VALUES (?,?,?,?,?,?,?,?,?)";
+    private final String SELECT_CUSTOMER = "SELECT * from customer where customer.id =?";
     public DAOImplementacion() {
         this.configFile = ResourceBundle.getBundle("control.configure");
         this.driverBD = configFile.getString("Driver");
@@ -43,9 +40,10 @@ public class DAOImplementacion implements DAO {
         try
         {
             con = DriverManager.getConnection(this.urlBD, this.userBD, this.contraBD);
+            System.out.println("Conexión establecida.");
         } catch (SQLException e)
         {
-
+            e.printStackTrace();
         }
     }
 
@@ -65,22 +63,22 @@ public class DAOImplementacion implements DAO {
         this.openConnection();
         try
         {
-            stmt = con.prepareStatement(createCustomer);
-            stmt.setInt(1, c.getId());
-            stmt.setString(2, c.getFirstName());
-            stmt.setString(3, c.getLastName());
-            stmt.setString(4, c.getMiddleInitial());
-            stmt.setString(5, c.getStreet());
-            stmt.setString(6, c.getCity());
+            stmt = con.prepareStatement(CREATE_CUSTOMER);
+            //stmt.setLong(1, c.getId());
+            stmt.setString(1, c.getCity());
+            stmt.setString(2, c.getEmail());
+            stmt.setString(3, c.getFirstName());
+            stmt.setString(4, c.getLastName());
+            stmt.setString(5, c.getMiddleInitial());
+            stmt.setLong(6, c.getPhone());
             stmt.setString(7, c.getState());
-            stmt.setInt(8, c.getZip());
-            stmt.setLong(9, c.getPhone());
-            stmt.setString(10, c.getEmail());
+            stmt.setString(8, c.getStreet());
+            stmt.setInt(9, c.getZip());
             int row = stmt.executeUpdate();
             System.out.println("Filas afectadas -> " + row);
-        } catch (Exception e)
+        } catch (SQLException se)
         {
-
+            se.printStackTrace();
         } finally
         {
             try
@@ -89,16 +87,73 @@ public class DAOImplementacion implements DAO {
             } catch (Exception e)
 
             {
+                
             }
 
         }
     }
 
-    @Override
-    public Customer consultarCliente(int idCus) {
-        return null;
+   //////////// BUSCAR CLIENTE//////
+
+    public Customer consultarCliente(long idCus) {
+        Customer cus = null;
+
+        ResultSet rs = null;
+
+        this.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECT_CUSTOMER);
+            stmt.setLong(1, idCus);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                cus = new Customer();
+
+                cus.setId(rs.getInt("id"));
+                cus.setCity(rs.getString("city"));
+                cus.setEmail(rs.getString("email"));
+                cus.setFirstName(rs.getString("firstName"));
+                cus.setLastName(rs.getString("lastName"));
+                cus.setMiddleInitial(rs.getString("middleInitial"));
+                cus.setPhone(rs.getInt("phone"));
+                cus.setState(rs.getString("state"));
+                cus.setStreet(rs.getString("street")); 
+                cus.setZip(rs.getInt("zip"));
+                
+                
+               
+               
+            }
+
+        } catch (SQLException e1) {
+            // System.out.println("ERROR en busqueda SQL");
+            e1.printStackTrace();
+        }
+
+        // se CIERRA RS
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                // System.out.println("ERROR cierre RS");
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            this.closeConnection();
+        } catch (SQLException e) {
+            // System.out.println("Error en cierre SQL");
+            e.printStackTrace();
+        }
+
+        return cus;
+
+        
 
     }
+
 
     @Override
     public List<Account> consultarCuentas(int idAcc) {

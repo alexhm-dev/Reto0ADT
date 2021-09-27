@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public class Customer implements Serializable {
     //attributes
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private String middleInitial;
@@ -30,11 +30,11 @@ public class Customer implements Serializable {
     
     //getters & setters
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
